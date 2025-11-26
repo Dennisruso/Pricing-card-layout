@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/* ========================================
+   Global Styles & Layout
+   ======================================== */
+
+body {
+font-family: Arial, sans-serif;
+background-color: #f5f5f5;
+padding: 20px;
+}
+
+/* Container for pricing cards - uses flexbox for responsive layout */
+.cards-container {
+display: flex;
+gap: 20px;
+justify-content: center;
+flex-wrap: wrap;
+}
+
+/* ========================================
+   Card Component Styles
+   ======================================== */
+
+/* Main card container with shadow and rounded corners */
+.card {
+width: 300px;
+background-color: #fff;
+box-shadow: 0 0 10px #ccc;
+padding: 20px;
+text-align: left;
+border-radius: 8px;
+/* Smooth animation for hover effects */
+transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Hover effect: lift card up and enhance shadow */
+.card:hover {
+transform: translateY(-5px);
+box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Card title - plan name */
+.card-title {
+font-size: 22px;
+font-weight: bold;
+margin: 0 0 10px 0;
+color: #333;
+}
+
+/* Price display - large prominent text */
+.card-price {
+font-size: 28px;
+color: #2ecc71;
+font-weight: bold;
+margin: 10px 0;
+}
+
+/* Subtitle - billing period (e.g., "/month") */
+.card-subtitle {
+font-size: 14px;
+color: #888;
+margin-bottom: 20px;
+}
+
+/* Feature list styling - removes default bullets */
+.card-features {
+list-style: none;
+padding: 0;
+margin: 20px 0;
+}
+
+/* Individual feature items with divider */
+.card-features li {
+padding: 10px 0;
+border-bottom: 1px solid #eee;
+color: #555;
+}
+
+/* Remove border from last feature item */
+.card-features li:last-child {
+border-bottom: none;
+}
+
+/* ========================================
+   Button Styles
+   ======================================== */
+
+/* Main button styling - full width call-to-action */
+.card-button {
+background: #3498db;
+color: white;
+padding: 12px 20px;
+border: none;
+margin-top: 20px;
+border-radius: 4px;
+font-size: 16px;
+font-weight: bold;
+width: 100%;
+cursor: pointer;
+/* Smooth color transition on hover */
+transition: background 0.3s;
+}
+
+/* Hover state - darker blue */
+.card-button:hover {
+background: #2980b9;
+}
+
+/* Active state - slight scale down for feedback */
+.card-button:active {
+transform: scale(0.98);
+}
+</style>
+</head>
+<body>
+
+<!-- Container for displaying multiple pricing cards -->
+<div class="cards-container">
+<!-- Card 1: Basic Plan -->
+<div class="card">
+<h2 class="card-title">Basic Plan</h2>
+<p class="card-price">$9.99</p>
+<p class="card-subtitle">/month</p>
+<ul class="card-features">
+<li>1 GB Storage</li>
+<li>Basic Support</li>
+<li>All Core Features</li>
+</ul>
+<button class="card-button">Start Trial</button>
+</div>
+
+<!-- Card 2: Pro Plan -->
+<div class="card">
+<h2 class="card-title">Pro Plan</h2>
+<p class="card-price">$29.99</p>
+<p class="card-subtitle">/month</p>
+<ul class="card-features">
+<li>100 GB Storage</li>
+<li>Priority Support</li>
+<li>Advanced Analytics</li>
+</ul>
+<button class="card-button">Get Started</button>
+</div>
+
+<!-- Card 3: Enterprise Plan -->
+<div class="card">
+<h2 class="card-title">Enterprise</h2>
+<p class="card-price">Custom</p>
+<p class="card-subtitle">pricing</p>
+<ul class="card-features">
+<li>Unlimited Storage</li>
+<li>24/7 Dedicated Support</li>
+<li>Custom Integration</li>
+</ul>
+<button class="card-button">Contact Us</button>
+</div>
+</div>
+
+<script>
+/**
+ * Card Component Factory Function
+ * 
+ * Creates a reusable pricing card element that can be dynamically added to the DOM.
+ * This function eliminates code repetition and makes it easy to generate multiple cards
+ * with different data.
+ * 
+ * @param {string} title - Card heading/plan name
+ * @param {string} price - Price amount to display
+ * @param {string} subtitle - Billing period or pricing note (e.g., "/month")
+ * @param {array} features - Array of feature strings to display as list items
+ * @param {string} buttonText - Text for the call-to-action button
+ * @param {function} onButtonClick - Optional callback function executed when button is clicked
+ * @returns {HTMLElement} - Complete card DOM element ready to insert into the page
+ */
+function createCard(title, price, subtitle, features, buttonText, onButtonClick) {
+  // Create main card container
+  const card = document.createElement('div');
+  card.className = 'card';
+  
+  // Create and configure title element
+  const titleEl = document.createElement('h2');
+  titleEl.className = 'card-title';
+  titleEl.textContent = title;
+  
+  // Create and configure price element
+  const priceEl = document.createElement('p');
+  priceEl.className = 'card-price';
+  priceEl.textContent = price;
+  
+  // Create and configure subtitle element (e.g., billing period)
+  const subtitleEl = document.createElement('p');
+  subtitleEl.className = 'card-subtitle';
+  subtitleEl.textContent = subtitle;
+  
+  // Create feature list and populate with feature items
+  const featuresList = document.createElement('ul');
+  featuresList.className = 'card-features';
+  features.forEach(feature => {
+    const li = document.createElement('li');
+    li.textContent = feature;
+    featuresList.appendChild(li);
+  });
+  
+  // Create call-to-action button
+  const button = document.createElement('button');
+  button.className = 'card-button';
+  button.textContent = buttonText;
+  // Attach click handler if provided
+  if (onButtonClick) {
+    button.addEventListener('click', onButtonClick);
+  }
+  
+  // Assemble all elements into the card
+  card.appendChild(titleEl);
+  card.appendChild(priceEl);
+  card.appendChild(subtitleEl);
+  card.appendChild(featuresList);
+  card.appendChild(button);
+  
+  return card;
+}
+
+/**
+ * USAGE EXAMPLE:
+ * 
+ * Create a new card dynamically and add it to the container:
+ * 
+ * const newCard = createCard(
+ *   'Starter Plan',
+ *   '$4.99',
+ *   '/month',
+ *   ['500 MB Storage', 'Email Support', 'Basic Features'],
+ *   'Sign Up',
+ *   () => alert('Sign Up clicked!')
+ * );
+ * document.querySelector('.cards-container').appendChild(newCard);
+ */
+</script>
+
+</body>
+</html>
